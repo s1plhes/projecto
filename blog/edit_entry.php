@@ -14,15 +14,13 @@ if(!isset(($_SESSION["loggedin"]))) {
 }
 
 $getid = $_GET['page_id'];
-$sql = mysqli_query(conn, "SELECT * FROM blog WHERE id=$getid");
-$result = mysqli_fetch_assoc($sql);
-
+$sql = engine->run("SELECT * FROM blog WHERE id=?"[$getid]);
+$result = $sql->fetch(PDO::FETCH_ASSOC);
 $lastTitle = $result['title'];
 $lastBody = $result['text'];
 $lastDesc = $result['description'];
 $lastId = $_GET['page_id'];
-    
-template_header("editor");
+template_header("editor", null);
 ?>
 
     <body>

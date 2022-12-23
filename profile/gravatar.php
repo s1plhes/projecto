@@ -32,7 +32,7 @@ function user_avatar($user_avatar_id){
 	if(isset($user_avatar_id))
 	{
 		$usersession = $user_avatar_id;
-		$sql = mysqli_query(conn,"SELECT email FROM accounts WHERE id=$usersession");
+		$sql = mysqli_query(conn,"SELECT email FROM accounts WHERE id=\"$usersession\" OR username=\"$usersession\";");
 		$result = mysqli_fetch_assoc($sql);
 		$usergravataremail = $result["email"];
 		$email = $usergravataremail;

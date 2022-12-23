@@ -1,0 +1,58 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"better-comments.highlightPlainText": true,
+		"better-comments.tags": [
+
+			{
+				"tag": "!",
+				"color": "#FF2D00",
+				"strikethrough": false,
+				"underline": false,
+				"backgroundColor": "transparent",
+				"bold": false,
+				"italic": false
+			},
+			{
+				"tag": "?",
+				"color": "#3498DB",
+				"strikethrough": false,
+				"underline": false,
+				"backgroundColor": "transparent",
+				"bold": false,
+				"italic": false
+			},
+			{
+				"tag": "//",
+				"color": "#8CDFD6",
+				"strikethrough": true,
+				"underline": true,
+				"backgroundColor": "transparent",
+				"bold": true,
+				"italic": true
+			},
+			{
+				"tag": "todo",
+				"color": "#FF8C00",
+				"strikethrough": false,
+				"underline": false,
+				"backgroundColor": "transparent",
+				"bold": false,
+				"italic": false
+			},
+			{
+				"tag": "*",
+				"color": "#98C379",
+				"strikethrough": false,
+				"underline": false,
+				"backgroundColor": "transparent",
+				"bold": false,
+				"italic": false
+			}
+		]
+	}
+}

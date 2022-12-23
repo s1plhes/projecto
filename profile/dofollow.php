@@ -7,9 +7,9 @@ $query = "INSERT INTO followers (the_follower, the_followed) VALUES (\"$a\", \"$
 if (mysqli_query(conn,$query)) {
     $host  = $_SERVER['HTTP_HOST'];
     $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-    $yourid = $_SESSION['id'];
-    $extra = 'index.php?userid=';
-    header("Location: http://$host$uri/$extra$yourid");
+    $userName = $_SESSION['name'];
+    $extra = '?user=';
+    header("Location: http://$host$uri/$extra$userName");
     exit;
   } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);

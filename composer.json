@@ -1,0 +1,5 @@
+{
+    "require": {
+        "dcblogdev/pdo-wrapper": "^2.0"
+    }
+}

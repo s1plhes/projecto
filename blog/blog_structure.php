@@ -1,15 +1,17 @@
 
 <?php
 if(isset(($_SESSION['loggedin']))){
-              echo
+ // $editor = htmlspecialchars("../blog/editor.php", ENT_QUOTES, null, TRUE);
+  $editor = htmlspecialchars("../blog/editor.php");
+ echo
   <<<EOT
-              
               <nav class="blog-admin-bar navbar sticky-top">
-              <a href="../blog/editor.php" class="btn btn-danger mx-auto">Create a entry</a>
+              <a href="$editor" class="btn btn-danger mx-auto">Create a entry</a>
             </nav>
-  EOT;
+EOT;
 
-            }?>
+            }
+?>
 
     <div class="col-md-12">
       <div class="case">
@@ -25,32 +27,36 @@ if ($result->num_rows > 0) {
   while($item = $result->fetch_assoc()) {
     $title = $item["title"];
     $date = $item["date"];
-    $author = urlFetch($item["author"]);
+    $author = profileLink($item["author"]);
     $text = $item["text"];
     $entryid = $item["id"];
     $desc = $item["description"];
+    $category = $item["category"];
     $entryimg = $item["image"];
     $time = time_elapsed_string($date);
 //Post data
 
 echo 
 <<<EOT
-<div class="row bg-entry text-light mb-2" style="padding-left: 0px; padding-right: 0px;  margin: auto;">
-  <div class="col-md-6 col-lg-6 col-xl-8 d-flex" style="padding-left: 0px; padding-right: 0px; margin-left: auto;">
-    <a href="entry.php?page_id=$entryid" class="img w-100 mb-3 mb-md-0" style="background-image: url(../images/$entryimg);"></a>
+<div class="row bg-entry mb-2" style="padding-left: 0px; padding-right: 0px;  margin: auto;">
+  <div class="col-md-6 col-lg-6 col-xl-8 d-flex placeholder-glow shadow" style="padding-left: 0px; padding-right: 0px; margin-left: auto;">
+    <a href="entry.php?page_id=$entryid" class="img w-100 mb-3 mb-md-0 placeholder" style="background-image: url(../images/$entryimg);"></a>
   </div>
   <div class="col-md-6 col-lg-6 col-xl-4 d-flex">
-    <div class="text w-100 pl-md-3 mt-3">
-      <span class="subheading">Application</span>
-      <h2><a class="blog-title text-decoration-none" href="entry.php?page_id=$entryid">$title</a></h2>
-      <h3>$desc</h3>
+    <div class="text w-100 pl-md-3 mt-3 placeholder-glow">
+      <span class="subheading placeholder">$category</span>
+      <h2><a class="blog-title hover-1 text-decoration-none placeholder" href="entry.php?page_id=$entryid">$title</a></h2>
+      <h3 class="placeholder">$desc</h3>
         <ul class="media-social list-unstyled">
-          <li class="ftco-animate fadeInUp ftco-animated"><a href="#"><span><i class="fa-brands fa-twitter"></span></i></a></li>
-          <li class="ftco-animate fadeInUp ftco-animated"><a href="#"><span><i class="fa-brands fa-facebook"></span></i></a></li>
-          <li class="ftco-animate fadeInUp ftco-animated"><a href="#"><span><i class="fa-brands fa-instagram"></span></i></a></li>
+          <li class="ftco-animate fadeInUp ftco-animated" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+              <a href="#"><span><i class="fa-brands fa-twitter"></span></i></a></li>
+          <li class="ftco-animate fadeInUp ftco-animated" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+              <a href="#"><span><i class="fa-brands fa-facebook"></span></i></a></li>
+          <li class="ftco-animate fadeInUp ftco-animated" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+              <a href="#"><span><i class="fa-brands fa-instagram" ></span></i></a></li>
         </ul>
       <div class="meta">
-        <p class="mb-0 mx-auto text-light">$time</p>
+        <p class="mb-0 mx-auto placeholder">Wrote by $author $time</p>
       </div>
     </div>
   </div>
@@ -68,5 +74,3 @@ conn->close();
 </div>
 </div>
 </div>
-
-    <?=offcanvaslogin()?>

@@ -1,8 +1,5 @@
 
 <?php
-use PhpParser\Node\Expr\Isset_;
-use Psy\Readline\Hoa\Console;
-
 include "../page.php";
 
 if(!isset(($_SESSION["loggedin"]))) {
@@ -13,7 +10,7 @@ if(!isset(($_SESSION["loggedin"]))) {
     exit;
 }
     
-template_header("editor");
+template_header("editor",null);
 ?>
 
     <body>
@@ -29,7 +26,7 @@ template_header("editor");
                                 <input id="title" name="title" class="form-control" type="text" placeholder="write a tittle">
                             <label class="form-label">Body</label>
                             <div class="form-floating">
-                                <textarea class="form-control" id="editor" name="editor"></textarea>
+                                <textarea class="form-control input-group-text" id="editor" name="editor"></textarea>
                                 </div>
                             <label>Description</label>
                                 <input id="description" name="description" class="form-control" type="text" placeholder="write a short description">

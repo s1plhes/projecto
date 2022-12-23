@@ -1,25 +1,28 @@
 <?php
-use PhpParser\Node\Expr\Isset_;
-session_start();
-include "../modules/dbconnect.php";
+
+include "../modules/functions.php";
 
 if(isset(($_SESSION["loggedin"]))){
-$title = $_POST["title"]; //getting data to vars
-$text =  htmlspecialchars($_POST["editor"]); //getting data to vars
+
 $desc = $_POST["description"]; //getting data to vars
 $editingid = $_GET['page_id'];
 
 if(isset($_POST['Submit'])) 
 {
-    $title = $_POST["title"]; //getting data to vars
-    $text = $_POST["editor"]; //getting data to vars
-    $desc = $_POST["description"]; //getting data to vars
-    //Inster all the data
-    $sql =  mysqli_query(conn,"UPDATE blog set title='" . $title . "', text='" . $text . "', description='" . $desc . "' WHERE id='" . $editingid . "'");
+    $title = trim($_POST["title"]); //getting data to vars
+    $text =  htmlspecialchars($_POST["editor"]); //getting data to vars
+    $desc = trim( htmlspecialchars($_POST["description"])); //getting data to vars
+    //update all the data
+    $data = [
+    'tile' => $title,
+    'text' => $text,
+    'description' => $desc,
+    ];
+    $where = ['id' => $editingid];
+    engine->update('blog', $data, $where);
     //HI
     $host  = $_SERVER['HTTP_HOST'];
     $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-
     $sumid = $editingid;
     $extra = 'entry.php?page_id=';
     header("Location: http://$host$uri/$extra$sumid");

@@ -1,56 +1,20 @@
 <?php
-session_start();
-// Update the details below with your MySQL details
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'web';
-try {
-    $pdo = new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
-} catch (PDOException $exception) {
-    // If there is an error with the connection, stop the script and display the error
-    exit('Failed to connect to database!');
-}
 
+// Update the details below with your MySQL details
+date_default_timezone_set("America/Caracas");
+include("../modules/functions.php");
 // Below function will convert datetime to time elapsed string
 function comment_avatar($user_avatar_name){
-$DATABASE_HOST = 'localhost';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = '';
-$DATABASE_NAME = 'web';
 	if(isset($user_avatar_name))
 	{   
-        $pdo = new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
-        $stmt = $pdo->prepare('SELECT email FROM accounts WHERE username="'. $user_avatar_name .'"');
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
+    $sql = engine->run("SELECT email FROM accounts WHERE username = ?", [$user_avatar_name]);
+    $result = $sql->fetch(PDO::FETCH_ASSOC);
 		$email = $result['email'];
 		$default = "https://www.somewhere.com/homestar.jpg";
 		$size = 400;
 		$grav_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
 		return $grav_url;
 	}
-
-}
-
-function time_elapsed_string($datetime, $full = false) {
-  $now = new DateTime;
-  $ago = new DateTime($datetime);
-  $diff = $now->diff($ago);
-  $diff->w = floor($diff->d / 7);
-  $diff->d -= $diff->w * 7;
-  $string = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day', 'h' => 'hour', 'i' => 'minute', 's' => 'second');
-  foreach ($string as $k => &$v) {
-      if ($diff->$k) {
-          $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-      } else {
-          unset($string[$k]);
-      }
-  }
-  if (!$full) $string = array_slice($string, 0, 1);
-  return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
 
 // This function will populate the comments and comments replies using a loop
@@ -67,16 +31,16 @@ function show_comments($comments, $parent_id = -1) {
           $commentname = $comment["name"];
           $gravatar = comment_avatar($commentname);
           $html .= '
-        <div class="comment">
+        <div class="comment ">
             <div>
                 <img src="'. $gravatar .'" alt="" style="width:40px;" class="rounded-pill"> 
-                <h3 class="name">' . htmlspecialchars($comment['name'], ENT_QUOTES) . '</h3>
-                <span class="date">' . time_elapsed_string($comment['submit_date']) . '</span>
+                <h3 class="name ">' . htmlspecialchars($comment['name'], ENT_QUOTES) . '</h3>
+                <span class="date ">' . time_elapsed_string($comment['submit_date']) . '</span>
                 </div>
-                <p class="content">' . nl2br(htmlspecialchars($comment['content'], ENT_QUOTES)) . '</p>
-                <a class="reply_comment_btn" href="#" data-comment-id="' . $comment['id'] . '">Reply</a>
+                <p class="content ">' . nl2br(htmlspecialchars($comment['content'], ENT_QUOTES)) . '</p>
+                <a class="reply_comment_btn " href="#" data-comment-id="' . $comment['id'] . '">Reply</a>
                 ' . show_write_comment_form($comment['id']) . '
-                <div class="replies">
+                <div class="replies ">
                 ' . show_comments($comments, $comment['id']) . '
                 </div>
           </div>
@@ -91,7 +55,7 @@ function show_write_comment_form($parent_id = -1) {
   <div class="write_comment" data-comment-id="' . $parent_id . '">
       <form>
           <input name="parent_id" type="hidden" value="' . $parent_id . '">
-          <textarea name="content" placeholder="Write your comment here..." required></textarea>
+          <textarea name="content" ="Write your comment here..." required></textarea>
           <button type="submit">Submit Comment</button>
       </form>
   </div>
@@ -104,17 +68,21 @@ if (isset($_GET['page_id'])) {
   if (isset($_POST['content'])) {
     $username = $_SESSION['name'];
       // POST variables exist, insert a new comment into the MySQL comments table (user submitted form)
-      $stmt = $pdo->prepare('INSERT INTO comments (page_id, parent_id, name, content, submit_date) VALUES (?,?,?,?,NOW())');
-      $stmt->execute([ $_GET['page_id'], $_POST['parent_id'], $username, $_POST['content'] ]);
+      $data = [
+        'page_id' => $_GET['page_id'],
+        'parent_id' => $_POST['parent_id'],
+        'name' =>  $username,
+        'content' => $_POST['content'],
+        'submit_date' => 'NOW()'
+        ];
+        $insert = engine->insert('commnets', $data);
       exit('Your comment has been submitted!');
   }
   // Get all comments by the Page ID ordered by the submit date
-  $stmt = $pdo->prepare('SELECT * FROM comments WHERE page_id = ? ORDER BY submit_date DESC');
-  $stmt->execute([ $_GET['page_id'] ]);
+  $stmt = engine->run("SELECT * FROM comments WHERE page_id = ? ORDER BY submit_date DESC", [$_GET['page_id']]);
   $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
   // Get the total number of comments
-  $stmt = $pdo->prepare('SELECT COUNT(*) AS total_comments FROM comments WHERE page_id = ?');
-  $stmt->execute([ $_GET['page_id'] ]);
+  $stmt = engine->run("SELECT COUNT(*) AS total_comments FROM comments WHERE page_id = ?",[ $_GET['page_id']]);
   $comments_info = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
   exit('No page ID specified!');
