@@ -1,10 +1,15 @@
 <?php
 session_start();
 include "../modules/dbconnect.php";
-$a = $_POST["status"];
-$b = $_SESSION["id"];
-$query = "INSERT INTO user_status (status_text, user_id) VALUES (\"$a\", \"$b\")";
-if (mysqli_query(conn,$query)) {
+$reply_text = $_POST["status"];
+$reply_id = $_SESSION["id"];
+
+$data = [
+  'status_text' => $reply_text,
+  'user_id' => $reply_id
+];
+
+if (engine->insert('user_status', $data)) {
     $host  = $_SERVER['HTTP_HOST'];
     $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
     $yourid = $_SESSION['id'];

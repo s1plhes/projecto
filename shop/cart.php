@@ -7,9 +7,9 @@ if (isset($_POST['product_id'], $_POST['quantity']) && is_numeric($_POST['produc
     $product_id = (int)$_POST['product_id'];
     $quantity = (int)$_POST['quantity'];
     // Prepare the SQL statement, we basically are checking if the product exists in our databaser
-    $sql = mysqli_query(conn,"SELECT * FROM Products WHERE id = $product_id");
+    $sql = engine->run("SELECT * FROM Products WHERE id = ?",[$product_id]);
     // Fetch the product from the database and return the result as an Array
-    $product = mysqli_fetch_assoc($sql);
+    $product = $sql->fetch(PDO::FETCH_ASSOC);
     // Check if the product exists (array is not empty)
     if ($product && $quantity > 0) {
         // Product exists in database, now we can create/update the session variable for the cart
@@ -149,16 +149,24 @@ echo'<script>console.log("order sent")</script>';
   exit();
   }
 
-  $sql = "INSERT INTO `orders` (`order`, `username`, `costumer_name`, `costumer_lastname`, `costumer_email`, `costumer_phone`, `costumer_address`, `recipe`, `payment_method`, `details`, `date`)
-  VALUES (\"$orderData\", \"$userName\", \"$firstName\", \"$lastName\", \"$email\", \"$phone\", \"$address\", \"$payment_recipe\", \"$payment_method\", \"$details\", NOW());";
-  $query = mysqli_query(conn,$sql);
+  $data = [
+    'order' => $orderData,
+    'username' => $userName,
+    'costumer_name' => $firstName,
+    'costumer_lastname' => $lastName,
+    'costumer_email' => $email,
+    'costumer_phone' => $phone,
+    'costumer_address' => $address,
+    'recipe' => $payment_recipe,
+    'payment_method' => $payment_method,
+    'details' => $details,
+    'date' => 'NOW()',
+  ];
+  $db->insert('orders', $data);
   $response = file_get_contents("https://api.telegram.org/bot$apiToken/sendMessage?" .
   http_build_query($data) );
-
-
   $_SESSION['cart'] = array(); //Reset the cart
   unset($_SESSION['cart']); //destroy the session
-  
 }
 
 template_header('Cart',null);

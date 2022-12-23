@@ -2,11 +2,10 @@
 
 include "profile/gravatar.php";
 include "modules/functions.php";
-include "modules/dbconnect.php";
 include "modules/lang/english.php";
 
 date_default_timezone_set("America/Caracas");
-$pdo = pdo_connect_mysql();
+
 
 //Dolar Price direct from Dolar Today
 define('dolarPrice', dolar());

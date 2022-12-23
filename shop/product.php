@@ -5,9 +5,9 @@ $set_bc = breadcrumbs();
 if (isset($_GET['id'])) {
     // Prepare statement and execute, prevents SQL injection
     $product_id = $_GET['id'];
-    $sql = mysqli_query(conn,"SELECT * FROM products WHERE id = $product_id");
+    $sql = engine->run("SELECT * FROM products WHERE id = ?",[$product_id]);
     // Fetch the product from the database and return the result as an Array
-    $product = mysqli_fetch_assoc($sql);
+    $product = $sql->fetch(PDO::FETCH_ASSOC);
     // Check if the product exists (array is not empty)
     if (!$product) {
         // Simple error to display if the id for the product doesn't exists (array is empty)
@@ -23,7 +23,7 @@ $img = $product['img'];
 $desc = $product['desc'];
 $quantity = $product['quantity'];
 $price = $product['price'];
-$priveVES = $price * 15.77;
+$priveVES = $price * dolarPrice;
 
 template_header($product['name'],null);
 echo <<<product

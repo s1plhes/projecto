@@ -1,6 +1,6 @@
 <?php
 include("../page.php");
-$stmt = mysqli_query(conn,'SELECT * FROM products ORDER BY date_added DESC LIMIT 4');
+$sql = engine->run('SELECT * FROM products ORDER BY date_added DESC LIMIT 4');
 template_header("shop",null);
 $set_bc = breadcrumbs();
 echo <<<body
@@ -8,7 +8,7 @@ echo <<<body
         <div class="recentlyadded">
                 <div class="products shop-row">
 body;
-     while($product = mysqli_fetch_assoc($stmt)){ 
+     while($product = $sql->fetch(PDO::FETCH_ASSOC)){ 
         $id=$product['id'];
         $name=$product['name'];
         $desc=$product['short_desc'];
@@ -50,9 +50,8 @@ echo <<<table
     <div class="row" style="padding-right:0px;">
 
 table;
-        $sql = "SELECT * FROM products";
-        $query = mysqli_query(conn,$sql);
-        while($result = mysqli_fetch_assoc($query)){
+        $sql = engine->run("SELECT * FROM products");
+        while($result = $sql->fetch(PDO::FETCH_ASSOC)){
           $id = $result['id'];
           $name = $result['name'];
           $img = $result['img'];

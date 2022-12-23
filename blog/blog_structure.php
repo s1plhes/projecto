@@ -20,11 +20,10 @@ EOT;
 <?php
 
 //Post data
-$sql = "SELECT * FROM blog ORDER BY id DESC";
-$result = conn->query($sql);
-if ($result->num_rows > 0) {
+$sql = engine->run("SELECT * FROM blog ORDER BY id DESC");
+if ($sql->rowCount() > 0) {
   // output data of each row
-  while($item = $result->fetch_assoc()) {
+  while($item = $sql->fetch(PDO::FETCH_ASSOC)) {
     $title = $item["title"];
     $date = $item["date"];
     $author = profileLink($item["author"]);
@@ -66,7 +65,7 @@ EOT;
 } else {
   echo "0 results";
 }
-conn->close();
+
 //Cerrando conexion de la base de datos
 
 ?>

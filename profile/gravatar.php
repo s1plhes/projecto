@@ -32,8 +32,8 @@ function user_avatar($user_avatar_id){
 	if(isset($user_avatar_id))
 	{
 		$usersession = $user_avatar_id;
-		$sql = mysqli_query(conn,"SELECT email FROM accounts WHERE id=\"$usersession\" OR username=\"$usersession\";");
-		$result = mysqli_fetch_assoc($sql);
+		$sql = engine->run("SELECT email FROM accounts WHERE id = ? OR username = ?",[$usersession,$usersession]);
+		$result = $sql->fetch(PDO::FETCH_ASSOC);
 		$usergravataremail = $result["email"];
 		$email = $usergravataremail;
 		$default = "https://miro.medium.com/max/640/1*W35QUSvGpcLuxPo3SRTH4w.webp";

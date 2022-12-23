@@ -2,16 +2,16 @@
 include "../page.php";
 template_header("status");
 $sid = $_GET['sid'];
-$status_query_data = mysqli_query(conn,"SELECT * FROM user_status WHERE id=\"$sid\" limit 1;");
-while($status_data = mysqli_fetch_assoc($status_query_data)){    
+$sql = engine->run("SELECT * FROM user_status WHERE id = ? LIMIT 1",[$sid]);
+while($status_data = $sql->fetch(PDO::FETCH_ASSOC)){    
     $user_id = $status_data['user_id'];
     $status = $status_data["status_text"];
     $publisheddate = $status_data["published_date"];
     $tm = time_elapsed_string($publisheddate);
     $timetest = $_SERVER['REQUEST_TIME'];
     $status_id = $status_data['id'];
-    $status_query_data_b = mysqli_query(conn,"SELECT * FROM accounts WHERE id=\"$user_id\" ORDER BY id DESC;");
-    $status_data_b = mysqli_fetch_assoc($status_query_data_b);
+    $status_query_data_b = engine->run("SELECT * FROM accounts WHERE id = ? ORDER BY id DESC",[$user_id]);
+    $status_data_b = $status_query_data_b->fetch(PDO::FETCH_ASSOC);
     $name = profileName($status_data_b['username']);
     $link_name  = profileLink($status_data_b['username']);
     $gravatar = get_gravatar("$name");
@@ -54,9 +54,8 @@ echo<<<EOT
 </div>
 <div class="reply-footer skeleton">
 EOT;
-            $st = mysqli_query(conn,"SELECT * FROM user_status WHERE parent_id=\"$status_id\" ORDER BY id DESC;");
-            $st_row = mysqli_num_rows($st);
-            if ($st_row > 0)
+            $st = engine->run("SELECT * FROM user_status WHERE parent_id = ?ORDER BY id DESC",[$status_id]);
+            if ($st->rowCount() > 0)
             {           
                 while($rs = mysqli_fetch_assoc($st))
                 {      
@@ -67,8 +66,9 @@ EOT;
                     $i = $rs["user_id"];
                     $reply_parent = $rs["parent_id"];
                     $reply_userlink = profileLink($i);
-                    $getting_reply_user_data = mysqli_query(conn,"SELECT * FROM accounts WHERE id=\"$i\"");
-                    $reply_user_data = mysqli_fetch_assoc($getting_reply_user_data);
+
+                    $getting_reply_user_data = engine->run("SELECT * FROM accounts WHERE id = ?",[$i]);
+                    $reply_user_data = $getting_reply_user_data->fetch(PDO::FETCH_ASSOC);
                     $reply_username = $reply_user_data['username'];
                     $gravatar = get_gravatar($reply_username);
                     echo<<<replies

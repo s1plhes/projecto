@@ -5,11 +5,12 @@
  */
 
 include "../page.php";
-$profile_username = $_GET["user"]; //getting the User Id
-$sql = mysqli_query(conn,"SELECT * FROM accounts WHERE username='$profile_username'");
-$profile = mysqli_fetch_assoc($sql);
+$user = $_GET["user"];
+$sql = engine->run("SELECT * FROM accounts WHERE username = ?",[$user]);
+$profile = $sql->fetch(PDO::FETCH_ASSOC);
 $gravatar = user_avatar($profile['id']);
-$followbtn = isFollowing($profile_username);
+$profile_username = $profile['username'];
+$followbtn = isFollowing($profile['username']);
 $articles = number_format(gettingWrittenBlogE($profile_username));
 $followersnum = number_format(gettingFollowers($profile_username));
 $followingnum = number_format(gettingFollowing($profile_username));
@@ -234,12 +235,12 @@ EOT;
                         $reply_time = time_elapsed_string($reply_date);
                         $reply_status = $rs["status_text"];
                         $reply_id = $rs['id'];
-                        $i = $rs["user_id"];
+                        $i = $rs["user_id"]; 
                         $reply_id_id = $rs["id"];
                         $reply_parent = $rs["parent_id"];
                         $reply_userlink = profileLink($i);
-                        $getting_reply_user_data = mysqli_query(conn,"SELECT * FROM accounts WHERE id=\"$i\"");
-                        $reply_user_data=mysqli_fetch_assoc($getting_reply_user_data);
+                        $getting_reply_user_data = engine->run("SELECT * FROM accounts WHERE id = ?", [$status_id]);
+                        $reply_user_data = $getting_reply_user_data->fetch(PDO::FETCH_ASSOC);
                         $reply_username = $reply_user_data['username'];
                         echo<<<replies
                     <div class="placeholder-glow">                 

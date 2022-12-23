@@ -31,8 +31,7 @@ function admin_control(){
         if ($result["account_level"] = 3){
         $_SESSION["isadmin"] = true;       
         $id = $_SESSION['id'];
-        $sql = mysqli_query(conn,"SELECT * FROM accounts WHERE id=$id");
-        $result = mysqli_fetch_assoc($sql);
+        $sql = engine->run("SELECT * FROM accounts WHERE id= ?",[$id])->fetch(PDO::FETCH_ASSOC);
         }   
     }   
 }
@@ -104,18 +103,15 @@ function gettingFollowing($i){
 
 function isFollowing($i){
     if(isset(($_SESSION["loggedin"]))){
-        engine->getPdo();
-        $row = engine->run("SELECT * FROM accounts WHERE username = ?",[$i])
-        ->fetch(PDO::FETCH_ASSOC);
+        $sql = engine->run("SELECT * FROM accounts WHERE username = ?",[$i]);
+        $row = $sql->fetch(PDO::FETCH_BOTH); 
         $user_name = $row['username'];
         $session_name = $_SESSION['name'];
-        //$total_row = engine->count("SELECT * FROM followers WHERE the follower = ? AND the_followed = ?", [$session_name, $user_name]);
-        $sql = mysqli_query(conn,'SELECT * FROM followers WHERE the_follower="'.$session_name.'"  AND the_followed="'.$user_name.'"'); //SQL to compare
-        $total_row= mysqli_num_rows($sql); //fetching
+        $sql = engine->run("SELECT * FROM followers WHERE the_follower = ?  AND the_followed = ?",[$session_name, $user_name]); //SQL to compare
         if($_SESSION['name'] == $row['username']){
             $output = '';
             } else{
-            if($total_row > 0){
+            if($sql->rowCount() > 0){
                 $uf = $_SESSION['name'];
                 $utf = $row['username'];
                 $output = 
@@ -191,20 +187,6 @@ function level($lvl){
         return "Moderator";
     } elseif($lvl == 3){
         return "Admin";
-    }
-}
-
-function pdo_connect_mysql() {
-    // Update the details below with your MySQL details
-    $DATABASE_HOST = 'localhost';
-    $DATABASE_USER = 'root';
-    $DATABASE_PASS = '';
-    $DATABASE_NAME = 'web';
-    try {
-    	return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
-    } catch (PDOException $exception) {
-    	// If there is an error with the connection, stop the script and display the error.
-    	exit('Failed to connect to database!');
     }
 }
 
@@ -290,12 +272,10 @@ x;
 
 function checkUserOrder($i){
     $id = $i;
-    $sql = mysqli_query(conn,"SELECT * FROM orders WHERE id=\"$id\";");
-    $num_rows = mysqli_num_rows($sql);
-    if ($num_rows > 0) {
-        while($result = mysqli_fetch_assoc($sql)){        
+    $sql = engine->run("SELECT * FROM orders WHERE id = ?", [$id]);
+    if ($sql->rowCount()> 0) {
+        while($result = $sql->fetch(PDO::FETCH_ASSOC)){        
             $order_id = $result['id'];
-            $order_user = $result['username'];
             $order_status = $result['status'];
             $xmlData = $result['order'];
             $xml = simplexml_load_string($xmlData) or die("Error");
