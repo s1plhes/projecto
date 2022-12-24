@@ -3,11 +3,13 @@
 include "../modules/functions.php";
 if(isset(($_SESSION["loggedin"]))){
 //GET LAST ID
-$sqlGetLastId = engine->run("SELECT * FROM blog  ORDER BY id DESC LIMIT 1");
+$sqlGetLastId = engine->run("SELECT * FROM blog ORDER BY id DESC LIMIT 1");
 $lastId = $sqlGetLastId->fetch(PDO::FETCH_ASSOC);
 if(isset($_POST['Submit'])) 
 {
-    $userId = trim($lastid["id"]); //Setting the array to varchar
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $folder = "./images/" . $filename;
     $authorname = trim($_SESSION['name']); //getting data to vars
     $title = trim($_POST["title"]); //getting data to vars
     $text = $_POST["editor"]; //getting data to vars
@@ -20,8 +22,14 @@ if(isset($_POST['Submit']))
         'text' => $text,
         'date' => date("Y-m-d h:i:sa"),
         'description' => $description,
+        'image' => $filename 
     ];
     $db->insert('blog', $data);
+    if (move_uploaded_file($tempname, $folder)) {
+        echo "<h3>  Image uploaded successfully!</h3>";
+    } else {
+        echo "<h3>  Failed to upload image!</h3>";
+    }
     //HI
     $host  = $_SERVER['HTTP_HOST'];
     $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');

@@ -164,7 +164,7 @@ function time_elapsed_string($datetime, $full = false) {
 function replied_check($i){
     $result = engine->run("SELECT * FROM user_status WHERE id = ?", [$i])->fetch(PDO::FETCH_ASSOC);
     if ($result['parent_id'] > 0){
-        $replied_result = engine->run("SELECT * FROM user_status WHERE id = ?", [ $result['parent_id']])->fetch(PDO::FETCH_ASSOC);
+        $replied_result = engine->run("SELECT * FROM user_status WHERE id = ?", [$result['parent_id']])->fetch(PDO::FETCH_ASSOC);
         $replied_user = profileName($replied_result['user_id']);
         $replied_status_time = time_elapsed_string($replied_result['published_date']);
         $replied_status_id = $replied_result['id'];
@@ -351,6 +351,16 @@ function utf8ize( $mixed ) {
     }
     return $mixed;
 }
-
-
+function pdo_connect_mysql() {
+    $DATABASE_HOST = 'localhost';
+    $DATABASE_USER = 'root';
+    $DATABASE_PASS = '';
+    $DATABASE_NAME = 'web';
+    try {
+    	return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
+    } catch (PDOException $exception) {
+    	// If there is an error with the connection, stop the script and display the error.
+    	exit('Failed to connect to database!');
+    }
+}
 ?>

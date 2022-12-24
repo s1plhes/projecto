@@ -18,16 +18,23 @@ $entrytitle = $row['title'];
 $entrytxt = htmlspecialchars_decode($row['text']);
 $entryauthor = urlFetch($row['author']);
 $string_author = $row['author'];
-$entrydate = $row['date'];
+$entry_image = $row['image'];
+$d=strtotime($row['date']);
+$entrydate = date("M d Y h:i a", $d);
+$avatar = user_avatar($string_author);
 $entrydesc = $row['description'];
 template_header($entrytitle, $entrydesc);
 echo <<<EOT
+
   <div class="container-fluid entry-bg">
+  <!--<div class="container-fluid entry-image parallax" style="background-image: url(images/$entry_image);height: 150px; width="100%"></div>-->
     <div class="container-fluid p-4">
+
       <article class="entrybody placeholder-glow">
         <h1 class="fw-semibold display-1 placeholder d-flex justify-content-center">$entrytitle</h1>
-        <p class="text-dark placeholder">written by $entryauthor on $entrydate</p><hr>
-        <div class="entry-body placeholder"><span class="fw-light fs-3">$entrytxt</span></div>
+        <div class="entry-data"><p class="text-dark placeholder"><img src="$avatar" alt="" style="width:40px;" class="rounded-pill">
+         $entryauthor on $entrydate</p></div>
+        <div class="entry-body placeholder"><span class="fw-light fs-3"><hr>$entrytxt</span></div>
       </article>
       <div class="container text-center">
 

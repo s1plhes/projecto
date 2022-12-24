@@ -216,9 +216,9 @@ EOT;
                         <script>function showrc$status_id$name$userid(){ document.getElementById('$status_id$name$userid').style.display = 'grid';}</script>
                         <a type="button" onClick="showrc$status_id$name$userid()"><button class="btn vhmbtn">Reply $name</button></a>
                         <form method="post" action="../profile/post_reply.php" id="$status_id$name$userid" style="display:none">
-                        <textarea class="form-control" placeholder="Write your reply" name="reply_text" minlength="4" maxlength="280"></textarea>
-                        <button class="vhmbtn btn" type="submit" >Publish</button>
-                        <input name="parent_id" value="$status_id" class="invisible"></input>
+                            <textarea class="form-control" placeholder="Write your reply" name="reply_text" minlength="4" maxlength="280"></textarea>
+                            <button class="vhmbtn btn" type="submit" >Publish</button>
+                            <input name="parent_id" value="$status_id" class="invisible"></input>
                         </form>                      
 reply;
     }        
@@ -239,7 +239,7 @@ EOT;
                         $reply_id_id = $rs["id"];
                         $reply_parent = $rs["parent_id"];
                         $reply_userlink = profileLink($i);
-                        $getting_reply_user_data = engine->run("SELECT * FROM accounts WHERE id = ?", [$status_id]);
+                        $getting_reply_user_data = engine->run("SELECT * FROM accounts WHERE id = ?", [$rs["user_id"]]);
                         $reply_user_data = $getting_reply_user_data->fetch(PDO::FETCH_ASSOC);
                         $reply_username = $reply_user_data['username'];
                         echo<<<replies
@@ -252,20 +252,23 @@ replies;
                         <script>
                          function showrc$reply_id_id$reply_username$reply_id_id$reply_parent(){document.getElementById('$reply_id_id$reply_username$reply_id_id$reply_parent').style.display = 'grid';}
                         </script>
-                         <a type="button" id="replybtn" onClick="showrc$reply_id_id$reply_username$reply_id_id$reply_parent()">
-                         <button class="btn vhmbtn">Reply</button></a>
-                           <form method="post" action="../profile/post_reply.php" id="$reply_id_id$reply_username$reply_id_id$reply_parent" style="display:none">
+                        <a type="button" id="replybtn" onClick="showrc$reply_id_id$reply_username$reply_id_id$reply_parent()">
+                        <button class="btn vhmbtn">Reply</button></a>
+                        <form method="post" action="../profile/post_reply.php" id="$reply_id_id$reply_username$reply_id_id$reply_parent" style="display:none">
                             <textarea class="form-control" placeholder="Write your reply"
                             name="reply_text" minlength="4" maxlength="280"></textarea>
                             <button class="vhmbtn btn" type="submit">Publish</button>
                             <input name="parent_id" value="$reply_id_id" class="invisible"></input>
-                        </form>                                                         
+                        </form>            
+                    </div>                                             
 repliesform;
 }
                 }
     
             } else {echo 'no replies';}           
-echo '</div>
+echo '
+
+        </div>
     </div>
 </div>'; //DON'T DELETE XD
 
@@ -273,17 +276,19 @@ echo '</div>
     $created_date = $profile["created_date"];
     $tcd = time_elapsed_string($created_date);
 echo <<<EOT
-</div> </div> </div> </div> 
+</div>
 <div class="col"> 
-    <div class="sticky-top"> <div>
-    <div class="container mt-3 d-flex sticky-top mt-5">
-        <div class="profile-info">
-            $profile_username is a Member since $tcd who aported $articles in this community. $profile_username has 
-            $followersnum members following his work and he follows $followingnum members
+    <div class="sticky-top "> <div>
+        <div class="container mt-3 d-flex sticky-top mt-5">
+            <div class="profile-info user-info">
+                $profile_username is a Member since $tcd who aported $articles in this community. $profile_username has 
+                $followersnum members following his work and he follows $followingnum members
+            </div>
         </div>
     </div>
-    </div>
-</div> </div> </div> </div> 
+</div> 
+</div> 
+</div> </div> 
 EOT;
 
 template_footer();

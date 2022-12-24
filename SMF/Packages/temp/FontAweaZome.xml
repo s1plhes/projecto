@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<name>Font AweaZome</name>
+	<id>zStudiosNetworks:FontAweaZomebbc</id>
+	<version>1.2</version>
+	<homepage>http://zstudios.es</homepage>
+
+		<file name=" $languagedir/Modifications.english.php">
+		<operation>
+			<search position="end" />
+			<add><![CDATA[
+$txt['time'] = 'Insert Font Aweasome BBC';
+]]></add>
+		</operation>
+	</file>
+
+ <file name="$languagedir/Modifications.english-utf8.php" error="skip">
+	<operation>
+			<search position="end" />
+			<add><![CDATA[
+$txt['time'] = 'Insert Font Aweasome BBC';
+]]></add>
+		</operation>
+	</file>
+	
+	<file name="$themedir/index.template.php">
+		<operation>
+			<search position="before"><![CDATA[	// Here comes the JavaScript bits!
+	echo ']]></search>
+			<add><![CDATA[
+<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>]]></add>
+		</operation>
+	</file>
+
+</modification>

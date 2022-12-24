@@ -64,7 +64,7 @@ table;
           echo<<<acc
           <div class="row bg-entry my-2" style="padding-left: 0px; padding-right: 0px;  margin: auto;">
             <div class="col-md-6 col-lg-6 col-xl-8 d-flex placeholder-glow shadow" style="padding-left: 0px; padding-right: 0px; margin-left: auto;">
-              <a href="index.php?page=product&id=$id" class="img w-100 mb-3 mb-md-0 placeholder" style="background-image: url(imgs/$img);"></a>
+              <a href="index.php?page=product&id=$id" class="img w-100 mb-3 mb-md-0 placeholder" style="background-image: url(imgs/$img);background-size:cover"></a>
 
             </div>
           <div class="col-md-6 col-lg-6 col-xl-4 d-flex">

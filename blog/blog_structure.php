@@ -39,7 +39,7 @@ echo
 <<<EOT
 <div class="row bg-entry mb-2" style="padding-left: 0px; padding-right: 0px;  margin: auto;">
   <div class="col-md-6 col-lg-6 col-xl-8 d-flex placeholder-glow shadow" style="padding-left: 0px; padding-right: 0px; margin-left: auto;">
-    <a href="entry.php?page_id=$entryid" class="img w-100 mb-3 mb-md-0 placeholder" style="background-image: url(../images/$entryimg);"></a>
+    <a href="entry.php?page_id=$entryid" class="img w-100 mb-3 mb-md-0 placeholder" style="background-image: url(images/$entryimg);background-size: cover"></a>
   </div>
   <div class="col-md-6 col-lg-6 col-xl-4 d-flex">
     <div class="text w-100 pl-md-3 mt-3 placeholder-glow">

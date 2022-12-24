@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<name>Font AweaZome</name>
+	<id>zStudiosNetworks:FontAweaZomebbc</id>
+	<type>modification</type>
+	<version>1.2</version>
+	<install for="2.0 - 2.0.99">
+		<modification>FontAweaZome.xml</modification>
+		<code>install.php</code>
+		<readme parsebbc="true">readme.txt</readme>
+		<require-file name="FontAweaZome.php" destination="$sourcedir" />
+		<require-file name="fa.gif" destination="$imagesdir/bbc/" />
+
+	</install>
+	<uninstall for="2.0 - 2.0.99">
+		<modification reverse="true">FontAweaZome.xml</modification>
+		<code>remove.php</code>
+		<remove-file name="$sourcedir/FontAweaZome.php" destination="$sourcedir" />
+		<remove-file name="$imagesdir/bbc/fa.gif" />
+	</uninstall>
+</package-info>

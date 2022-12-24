@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../modules/dbconnect.php";
+
 //setting variables
 $reply_text = $_POST["reply_text"];
 $reply_id = $_SESSION["id"];

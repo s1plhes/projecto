@@ -1,12 +1,11 @@
 <?php
 
-include "../modules/dbconnect.php";
+include "../modules/functions.php";
 
-$sql = "SELECT * FROM blog ORDER BY id DESC LIMIT 1 ";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
+$sql = engine->run("SELECT * FROM blog ORDER BY id DESC LIMIT 1 ");
+if ($sql->rowCount() > 0) {
   // output data of each row
-  while($item = $result->fetch_assoc()) {
+  while($item = $sql->fetch(PDO::FETCH_ASSOC)) {
 Echo '
 <div class="p-4 p-md-5 mb-4 rounded bg-dark text-light text-center" style="background-image: url('.$item["image"].';">
     <div class=" px-0">

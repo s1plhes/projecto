@@ -838,24 +838,11 @@ a#cart {
 }
 
 .btn-veh{
-  background: linear-gradient(var(--angle),#07C565 14.05%,rgba(1, 255, 128, 0.918) 89.3%);
-  animation: 7s rotate linear infinite;
+  background-color:var(--c3);
   text-decoration: none;
   font-weight: bold;
-  text-transform: none;
-}
-.btn-veh:hover{
-  background: linear-gradient(var(--angle),#07C565 14.05%,rgba(1, 255, 128, 0.918) 89.3%);
-  animation: 7s rotate linear infinite;
-  text-decoration: none;
-  font-weight: bold;
-  text-transform: none;
-}
 
-.btn {
-  text-decoration: none;
 }
-
 a {
   text-decoration: none!important;
 }
@@ -1155,3 +1142,27 @@ div#navbarNavAltMarkup{
   .case-shop:hover .text .meta p a {
     color:var(--white);
     }
+.user-info {
+      background: var(--c1);
+      border-radius: 6px;
+      padding: 34px;
+}
+.container.mt-4.mb-4 {
+  padding: 40px;
+}
+.entry-data {
+  display: flex;
+  justify-content: center;
+}
+.entry-data p {
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 12px;
+}
+.parallax{
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
